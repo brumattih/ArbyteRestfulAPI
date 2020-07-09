@@ -12,16 +12,21 @@ router.get(routeName, (req, res) => {
 
 /// Lista um produto de acordo com seu ID
 router.get(`${routeName}/:id`, (req, res) => {
-    res.json([{
+    res.json({
         message: "Vai retornar os dados de um produto dado um id",
         id: req.params.id,
-    }])
+    })
 })
 
 // Cria um produto
 router.post(routeName, (req, res) => {
+    const product = {
+        name: req.body.name,
+        price: req.body.price
+    }
     res.status(201).json({
         message: "Vai criar um produto",
+        createdProduct: product
     })
 })
 
@@ -34,6 +39,6 @@ router.patch(`${routeName}/:id`, (req, res) => {
 })
 
 // Deleta um produto
-router.delete(`${routeName}/:id`, (req, res) => {res.status(204).end()})
+router.delete(`${routeName}/:id`, (req, res) => { res.status(204).end() })
 
 module.exports = router

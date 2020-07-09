@@ -20,8 +20,14 @@ router.get(`${routeName}/:id`, (req, res) => {
 
 // Cria um pedido
 router.post(routeName, (req, res) => {
+    const order = {
+        product_id: req.body.product_id,
+        quantity: req.body.quantity
+
+    }
     res.status(201).json({
         message: "Vai criar um pedido",
+        createdOrder: order
     })
 })
 
@@ -34,6 +40,6 @@ router.patch(`${routeName}/:id`, (req, res) => {
 })
 
 // Deleta um pedido
-router.delete(`${routeName}/:id`, (req, res) => {res.status(204).end()})
+router.delete(`${routeName}/:id`, (req, res) => { res.status(204).end() })
 
 module.exports = router

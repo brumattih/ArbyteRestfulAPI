@@ -7,9 +7,13 @@ const app = express()
 const port = process.env.PORT || 5555
 
 app.use(morgan('dev'))
-app.use(bodyParser.urlencoded({ extended: false }))
+//app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-app.use(cors)
+app.use(cors())
+
+app.use((req, res, next) => {
+    return next()
+})
 
 app.use(routes)
 

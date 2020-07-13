@@ -1,44 +1,61 @@
 const { Router } = require('express')
 const router = new Router()
+const knex = require('../database')
+const { update } = require('../database')
 
 const routeName = "/products"
+const tableName = 'products'
 
 // Lista todos os produtos
 router.get(routeName, (req, res) => {
-    res.json([{
-        message: "Vai retornar todos os produtos"
-    }])
+    console.log('Caiu na rota')
+    knex(tableName)
+        .then(result => {
+            res.json(result)
+        }).catch((err) => { console.log('err: ', err) })
 })
 
 /// Lista um produto de acordo com seu ID
 router.get(`${routeName}/:id`, (req, res) => {
-    res.json({
-        message: "Vai retornar os dados de um produto dado um id",
-        id: req.params.id,
-    })
+    knex(tableName)
+        .where({ id: req.params.id })
+        .then(([found]) => res.json(found))
 })
 
 // Cria um produto
 router.post(routeName, (req, res) => {
-    const product = {
-        name: req.body.name,
-        price: req.body.price
-    }
-    res.status(201).json({
-        message: "Vai criar um produto",
-        createdProduct: product
-    })
+    knex(tableName)
+        .insert(req.body)
+        .returning('*')
+        .then((inserted => {
+            res.status(201).json(inserted)
+        }))
 })
 
 // Edita os dados de um produto
-router.patch(`${routeName}/:id`, (req, res) => {
-    res.json([{
-        message: "Vai editar os dados de um produto dado um id",
-        id: req.params.id,
-    }])
+router.patch(`${routeName}/:id`, async (req, res) => {
+    try {
+        const [found] = await knex(tableName).where({ id: req.params.id })
+        if (!found) {
+            const err = Error("Not Found")
+            err.status = 404
+            throw err
+        }
+        const updated = await knex(tableName)
+            .where({ id: req.params.id })
+            .update(req.body)
+        res.json(updated)
+    } catch (err) {
+        res.status(err.status || 500).json({ message: err.message })
+    }
 })
 
 // Deleta um produto
-router.delete(`${routeName}/:id`, (req, res) => { res.status(204).end() })
+router.delete(`${routeName}/:id`, (req, res) => {
+    knex(tableName)
+        .where({ id: req.params.id })
+        .del()
+        .then(() => res.status(204).end())
+})
 
 module.exports = router

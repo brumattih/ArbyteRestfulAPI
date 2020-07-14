@@ -1,36 +1,20 @@
 const { Router } = require('express')
 const router = new Router()
-const knex = require('../database')
-const { update } = require('../database')
+const controller = require('../controllers/products')
+const knex = require('../../database')
+const { update } = require('../../database')
 
 const routeName = "/products"
 const tableName = 'products'
 
 // Lista todos os produtos
-router.get(routeName, (req, res) => {
-    console.log('Caiu na rota')
-    knex(tableName)
-        .then(result => {
-            res.json(result)
-        }).catch((err) => { console.log('err: ', err) })
-})
+router.get(routeName, controller.getAll)
 
 /// Lista um produto de acordo com seu ID
-router.get(`${routeName}/:id`, (req, res) => {
-    knex(tableName)
-        .where({ id: req.params.id })
-        .then(([found]) => res.json(found))
-})
+router.get(`${routeName}/:id`, controller.getById)
 
 // Cria um produto
-router.post(routeName, (req, res) => {
-    knex(tableName)
-        .insert(req.body)
-        .returning('*')
-        .then((inserted => {
-            res.status(201).json(inserted)
-        }))
-})
+router.post(routeName, controller.create)
 
 // Edita os dados de um produto
 router.patch(`${routeName}/:id`, async (req, res) => {
@@ -51,11 +35,6 @@ router.patch(`${routeName}/:id`, async (req, res) => {
 })
 
 // Deleta um produto
-router.delete(`${routeName}/:id`, (req, res) => {
-    knex(tableName)
-        .where({ id: req.params.id })
-        .del()
-        .then(() => res.status(204).end())
-})
+router.delete(`${routeName}/:id`, controller.del)
 
 module.exports = router

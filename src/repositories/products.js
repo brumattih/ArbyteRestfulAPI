@@ -19,6 +19,14 @@ const create = (product) => {
         .then(([inserted]) => inserted)
 }
 
+// UPDATE products SET name=?, price=? WHERE id=?
+const update = (id, product) => {
+    return knex(tableName)
+        .where({ id: id })
+        .update(product)
+}
+
+// DELETE FROM products WHERE id = ?
 const del = (id) => {
     return knex(tableName)
         .where({ id: id })
@@ -30,5 +38,6 @@ module.exports = {
     getAll,
     getById,
     create,
+    update,
     del,
 }

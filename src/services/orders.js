@@ -1,5 +1,6 @@
 const repository = require('../repositories/orders')
 const productService = require('./products')
+const moment = require('moment')
 const Order = require('../models/Order')
 
 const getAll = () => repository.getAll()
@@ -21,11 +22,29 @@ const create = async (data) => {
     return repository.getById(id)
 }
 
+const update = async (id, data) => {
+    const order = await repository.getById(id)
+    if (!order.id) {
+        throw { status: 404, message: "Not found" }
+    }
+    const merged = Object.assign({}, order, data)
 
+    const newOrder = new Order({
+        ...merged, id: undefined,
+        created_at: undefined,
+        value: product.price * merged.quantity,
+        updated_at: moment().utc().format()
+    })
+
+    await repository.update(id, newOrder)
+
+    return repository.getById(id)
+}
 
 
 module.exports = {
     getAll,
     getById,
-    create
+    create,
+    update
 }

@@ -1,7 +1,7 @@
 const moment = require('moment')
 const utcNow = moment().utc().format()
 
-module.exports = function Order(data) {
+module.exports = function Order(data = {}) {
     this.id = data.id
     this.product_id = data.product_id
     this.quantity = data.quantity

@@ -8,7 +8,7 @@
     "start": "nodemon server",
     "migration:create": "knex migrate:make",
     "migration:up": "knex migrate:latest",
-    "migration:down": "knex migrate:rollback"
+    "migration:down": "knex migrate:down"
   },
   "keywords": [
     "node"
@@ -20,6 +20,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "knex": "^0.21.1",
+    "moment": "^2.27.0",
     "morgan": "^1.10.0",
     "pg": "^8.2.2",
     "sqlite3": "^5.0.0"

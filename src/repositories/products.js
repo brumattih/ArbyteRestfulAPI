@@ -1,11 +1,11 @@
 const knexfile = require("../../knexfile");
 const knex = require('../../database')
+const moment = require('moment')
 
 const tableName = 'products'
 
 // SELECT * FROM products
 const getAll = () => knex(tableName)
-
 
 // SELECT * FROM products WHERE id=?
 const getById = (id) => knex(tableName)
@@ -21,6 +21,7 @@ const create = (product) => {
 
 // UPDATE products SET name=?, price=? WHERE id=?
 const update = (id, product) => {
+    product.updated_at = moment().utc().format()
     return knex(tableName)
         .where({ id: id })
         .update(product)

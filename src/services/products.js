@@ -1,4 +1,5 @@
 const repository = require('../repositories/products')
+
 const getAll = () => repository.getAll()
 
 const getById = async (id) => {
@@ -9,6 +10,7 @@ const getById = async (id) => {
     return product
 }
 const create = (product) => {
+    
     return repository.create(product)
         .then(id => repository.getById(id))
 }
@@ -20,6 +22,7 @@ const create = (product) => {
 // }
 
 const update = async (id, data) => {
+    data.id = undefined
     const product = await repository.getById(id)
     if (!product) {
         throw { status: 404, message: "Not found" }

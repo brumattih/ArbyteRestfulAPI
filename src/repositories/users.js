@@ -8,14 +8,13 @@ const create = async user => {
     return id
 }
 
-// SELECT * FROM users WHHERE id=?
-const getById = async id => {
-    const [user] = await knex(tableName).where({ id: id })
+// SELECT * FROM users WHHERE ?=?
+const getOne = async params => {
+    const [user] = await knex(tableName).where(params)
     return new User(user)
 }
 
-
 module.exports = {
     create,
-    getById
+    getOne
 }

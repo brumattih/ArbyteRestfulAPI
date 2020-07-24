@@ -20,7 +20,9 @@ const login = async (req, res) => {
         }
         const data = await service.login(req.body)
         res.json(data)
-    } catch (error) {res, error}
+    } catch (error) {
+        handleError(res, error)
+    }
 }
 
 module.exports = {

@@ -7,7 +7,8 @@
     "test": "npm test",
     "start": "nodemon -r dotenv/config server",
     "migration:create": "knex migrate:make",
-    "migration:up": "knex migrate:latest --env production",
+    "migration:up": "knex migrate:latest",
+    "migration:up:prod": "knex migrate:latest --env production",
     "migration:down": "knex migrate:down"
   },
   "keywords": [
@@ -25,6 +26,7 @@
     "moment": "^2.27.0",
     "morgan": "^1.10.0",
     "pg": "^8.2.2",
+    "serve": "^11.3.2",
     "sqlite3": "^5.0.0"
   },
   "devDependencies": {

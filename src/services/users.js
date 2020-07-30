@@ -4,6 +4,13 @@ const repository = require('../repositories/users')
 const { createToken } = require('../useful/jwt')
 
 const create = async (data) => {
+
+    const userFound = await repository.getOne({ email: data.email })
+    
+    if (userFound.id) {
+        throw {status: 409, message: 'User already exists'}
+    }
+  
     const user = new User({
         ...data, id: undefined,
         created_at: undefined,
@@ -16,6 +23,7 @@ const create = async (data) => {
     const created = await repository.getOne({ id: id })
 
     return created.view()
+
 }
 
 

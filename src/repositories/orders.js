@@ -16,7 +16,7 @@ const getById = async id => {
 
 // INSERT INTO orders (product_id, quantity, value) VALUES (?, ?, ?)
 const create = async order => {
-    const [id] = await knex(tableName).insert(order)
+    const [id] = await knex(tableName).returning('id').insert(order)
     return id
 }
 

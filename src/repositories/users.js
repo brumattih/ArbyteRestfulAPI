@@ -4,7 +4,7 @@ const tableName = 'users'
 
 // INSERT INTO users (name, email, password, created_at, updated_at) VALUES (?,?,?,?,?) 
 const create = async user => {
-    const [id] = await knex(tableName).insert(user)
+    const [id] = await knex(tableName).returning('id').insert(user)
     return id
 }
 
